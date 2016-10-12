@@ -7,49 +7,19 @@
 <body>	
 	<nav>
 		Infinity Wars
+		<button id="rules">Rules</button>
 	</nav>
 	<div class="questions_area">		
 	</div>
 	<div class="question_area">
 		<div class="question_text">
-		</div>
-		<br>
-		<div class="input">
-
-		</div>
-		<br>
-		<div class="output">
-
-		</div>
-
-		<br>
-		<div class="constraints">
-
-		</div>
-		<br>
-		<div class="sample_output">
-
-		</div>
-		<br>
-		<div class="explanation">
-
-		</div>
-		<br>
-		<div class="sample_input">
-
-		</div>
-		<br>
-		<div class="given_input">
-
-		</div>
-		<br>
+			
+		</div>		
 		<input type="text" placeholder="Answer Here" id="answer">
 		<br>
 		<button id="submit-answer">Answer!</button>
 	</div>
-	<div class="rules_area">
-		
-	</div>
+	
 </body>
 <script type="text/javascript" src="../javascripts/jquery.js"></script>
 <script>
@@ -66,28 +36,25 @@
 		});
 
 		$(document).on("click",".question",function(){
+			$("#answer").hide();
+			$("#submit-answer").hide();
 			var qno = $(this).text();
+			$(".question").removeClass('active');
+			$(this).addClass('active');
 			$.ajax({
 				url : '/getquestion/',
 				type : 'post',
 				data : 'qno=' + qno,
 				dataType : 'json',
 				success : function(data) {
-					
-					$(".question_text").html(data[0].question);
-					if(data[0].sample_input && data[0].sample_output && data[0].given_input)
-					{
-						$(".sample_input").html("<strong>Sample Input:</strong><br>" + data[0].sample_input);
-						$(".sample_output").html("<strong>Sample Output:</strong><br>" + data[0].sample_output);
-						$(".given_input").html("<strong>Given Input:</strong><br>" + data[0].given_input);
-					}
+					if(data.status == "locked")	
+						$(".question_text").html("This question is locked. Please answer question " + data.answer + " to unlock this question.");
 					else
 					{
-						$(".sample_input").empty();
-						$(".sample_output").empty();
-						$(".given_input").empty();
+						$(".question_text").html(data[0].question);					
+						$("#answer").fadeIn();
+						$("#submit-answer").fadeIn();
 					}
-
 				}
 			});
 		});
@@ -107,6 +74,11 @@
 				}
 			});
 		});
+		$(document).on("click","#rules",function(){
+			$("#answer").hide();
+			$("#submit-answer").hide();
+			$(".question_text").html('<h1>Rules</h1><ol><li>You are provided with eight sets of questions.</li><li>Each set has two questions.</li><li>First question of the set has to be answered to unlock the second question.</li><li>In the textbox, only the output has to be entered.</li></ol>');
+		})
 	});
 </script>
 </html>

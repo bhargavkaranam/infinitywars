@@ -4,6 +4,7 @@ html,body
 	width: 100%;
 	margin:0;
 	padding: 0;
+	background-color: #e0e0e0;
 }
 nav
 {
@@ -17,20 +18,21 @@ nav
 .questions_area
 {
 	float:left;
-	height: 100%;
+	height: auto;
 	width: 20%;
 	background:#4b4bec;
 }
 .question_area
 {
 	float:left;
-	height: 100%;
-	width: 60%;
-	background:#fff;
+	height: auto;
+	width: 80%;
+	background:#e0e0e0;
 	box-sizing: border-box;
 	padding: 20px;
 	font-size: 20px;
 	font-family: sans-serif;
+	
 }
 .rules_area
 {
@@ -42,10 +44,45 @@ nav
 .question
 {
 	width: 100%;
-	height: calc(100%/16);
+	height: 55px;
 	border-bottom:solid 1px #fff;
 	text-align: center;
 	box-sizing: border-box;
 	padding-top:15px;
 	color:#FFF;
+}
+#answer
+{
+	height: 30px;
+	width: 100%;
+	margin-bottom: 20px;
+	display: none;
+}
+#submit-answer
+{
+	height: 30px;
+	width: 80px;
+	border: none;
+	background: #3ab140;
+	color: #fff;
+	border-radius: 2px;
+	float:right;
+	display: none;
+}
+.active
+{
+	background: #212121;
+    border-left: solid 5px #dc2828;
+}
+#rules
+{
+	height: 50px;
+    width: 100px;
+    position: relative;
+    bottom: 10px;
+    float: right;
+    margin-right: 0;
+    border: none;
+    background: #212121;
+    color: #fff;
 }

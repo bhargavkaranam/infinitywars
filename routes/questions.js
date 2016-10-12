@@ -25,7 +25,7 @@ router.getquestion = function(req,res) {
 	if(req.session.tid)
 	{
 		var qno = req.body.qno,flag = 0;
-
+		
 		var connection = mysql.createConnection({
 			host : 'localhost',
 			user : 'root',
@@ -52,7 +52,7 @@ router.getquestion = function(req,res) {
 				{
 
 
-					sql = "SELECT * FROM questions where qno = " + connection.escape(qno);
+					sql = "SELECT qno,question,answer,sample_input,sample_output,given_input,input,output,constraints,explanation FROM questions where qno = " + connection.escape(qno);
 					connection.query(sql,function(err,results) {
 						connection.query("UPDATE teams SET qno = ? where tid = ?",[qno,req.session.tid],function(err1,results1) {
 							if(!err1)
@@ -63,11 +63,13 @@ router.getquestion = function(req,res) {
 						});					
 					});
 				}
+				else
+					res.json({status : 'locked',answer : qno - 1});
 			});
 		}
 		else
 		{
-			var sql = "SELECT * FROM questions where qno = " + connection.escape(qno);
+			var sql = "SELECT qno,question,answer,sample_input,sample_output,given_input,input,output,constraints,explanation FROM questions where qno = " + connection.escape(qno);
 			connection.query(sql,function(err,results) {
 
 				connection.query("UPDATE teams SET qno = ? where tid = ?",[qno,req.session.tid],function(err1,results1) {
