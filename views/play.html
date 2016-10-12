@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cryptoss | Infinity Wars</title>
+	<link rel="stylesheet" type="text/css" href="../stylesheets/play.css">
+</head>
+<body>	
+	<nav>
+		Infinity Wars
+	</nav>
+	<div class="questions_area">		
+	</div>
+	<div class="question_area">
+		<div class="question_text">
+		</div>
+		<br>
+		<div class="input">
+
+		</div>
+		<br>
+		<div class="output">
+
+		</div>
+
+		<br>
+		<div class="constraints">
+
+		</div>
+		<br>
+		<div class="sample_output">
+
+		</div>
+		<br>
+		<div class="explanation">
+
+		</div>
+		<br>
+		<div class="sample_input">
+
+		</div>
+		<br>
+		<div class="given_input">
+
+		</div>
+		<br>
+		<input type="text" placeholder="Answer Here" id="answer">
+		<br>
+		<button id="submit-answer">Answer!</button>
+	</div>
+	<div class="rules_area">
+		
+	</div>
+</body>
+<script type="text/javascript" src="../javascripts/jquery.js"></script>
+<script>
+	$(document).ready(function(){
+		$.ajax({
+			url : '/getquestions/',
+			type : 'post',
+			dataType : 'json',
+			success : function(data) {
+				$.each(data,function(k,v){
+					$(".questions_area").append('<div class="question">' + v.qno + '</div>');
+				});
+			}
+		});
+
+		$(document).on("click",".question",function(){
+			var qno = $(this).text();
+			$.ajax({
+				url : '/getquestion/',
+				type : 'post',
+				data : 'qno=' + qno,
+				dataType : 'json',
+				success : function(data) {
+					
+					$(".question_text").html(data[0].question);
+					if(data[0].sample_input && data[0].sample_output && data[0].given_input)
+					{
+						$(".sample_input").html("<strong>Sample Input:</strong><br>" + data[0].sample_input);
+						$(".sample_output").html("<strong>Sample Output:</strong><br>" + data[0].sample_output);
+						$(".given_input").html("<strong>Given Input:</strong><br>" + data[0].given_input);
+					}
+					else
+					{
+						$(".sample_input").empty();
+						$(".sample_output").empty();
+						$(".given_input").empty();
+					}
+
+				}
+			});
+		});
+
+		$(document).on("click","#submit-answer",function(){
+			var answer = $("#answer").val();
+			$.ajax({
+				url : '/checkanswer/',
+				type : 'post',
+				data : 'answer=' + answer,
+				dataType : 'json',
+				success : function(data) {
+					if(data.status == "true")
+						alert("Correct answer");
+					else
+						alert("Wrong answer");
+				}
+			});
+		});
+	});
+</script>
+</html>
